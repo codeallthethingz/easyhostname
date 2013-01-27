@@ -55,6 +55,9 @@ public class Cluster extends ReceiverAdapter {
 		String hostPort = new String(pMsg.getRawBuffer());
 		String[] split = hostPort.split(":");
 		Server server = new Server(split[0], split[1], split[2]);
+		if (log.isDebugEnabled()) {
+			log.debug("received: " + server);
+		}
 		serversByUuid.put(server.getUuid(), server);
 		if (!servers.contains(server)) {
 			servers.add(server);
@@ -65,10 +68,17 @@ public class Cluster extends ReceiverAdapter {
 				e.printStackTrace();
 			}
 			if (log.isDebugEnabled()) {
-				log.debug("new server: " + server);
+				log.debug("added");
+			}
+		} else {
+			if (log.isDebugEnabled()) {
+				log.debug("ignored as already in list");
 			}
 		}
 		try {
+			if (log.isDebugEnabled()) {
+				log.debug("rebroadcasting");
+			}
 			Message msg = new Message();
 			msg.setBuffer(getMe());
 			channel.send(msg);
