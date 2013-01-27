@@ -28,9 +28,9 @@ public class Cluster extends ReceiverAdapter {
 
 	private void setupChannel(final String pClusterName) throws Exception {
 		channel = new JChannel("easyhostnameBroadcast.xml");
-		channel.connect(pClusterName);
-		channel.setReceiver(this);
 		channel.setDiscardOwnMessages(true);
+		channel.setReceiver(this);
+		channel.connect(pClusterName);
 		Message msg = new Message();
 		msg.setBuffer(getMe());
 		channel.send(msg);
