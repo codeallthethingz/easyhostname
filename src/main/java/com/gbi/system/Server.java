@@ -31,8 +31,6 @@ public class Server implements Comparable<Server> {
 		return ip;
 	}
 
-	
-
 	@Override
 	public String toString() {
 		return "[" + getHostame() + ":" + getIp() + "]";
@@ -47,16 +45,14 @@ public class Server implements Comparable<Server> {
 			return false;
 		}
 		final Server other = (Server) obj;
-		String one = new StringBuffer(getHostame()).append(getIp()).toString();
-		String two = new StringBuffer(other.getHostame()).append(other.getIp())
-				.toString();
+		String one = new StringBuffer(getHostame()).toString();
+		String two = new StringBuffer(other.getHostame()).toString();
 		return one.equals(two);
 	}
 
 	@Override
 	public int hashCode() {
-		return new StringBuffer(getHostame()).append(getIp()).toString()
-				.hashCode();
+		return new StringBuffer(getHostame()).toString().hashCode();
 	}
 
 	public int compareTo(Server pO) {
