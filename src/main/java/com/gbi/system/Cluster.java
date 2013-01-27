@@ -39,7 +39,7 @@ public class Cluster extends ReceiverAdapter {
 	private byte[] getMe() throws UnsupportedEncodingException,
 			UnknownHostException {
 		return (getHostname() + ":" + getIp() + ":" + channel
-				.getAddressAsUUID()).getBytes("UTF-8");
+				.getAddressAsString()).getBytes("UTF-8");
 	}
 
 	private String getIp() throws UnknownHostException {
@@ -52,7 +52,11 @@ public class Cluster extends ReceiverAdapter {
 
 	@Override
 	public void receive(Message pMsg) {
-		String hostPort = new String(pMsg.getRawBuffer());
+		String hostPort = null;
+		try {
+			hostPort = new String(pMsg.getBuffer(), "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+		}
 		String[] split = hostPort.split(":");
 		Server server = new Server(split[0], split[1]);
 		String key = pMsg.getSrc().toString();
