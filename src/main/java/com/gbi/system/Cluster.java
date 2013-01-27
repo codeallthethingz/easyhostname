@@ -47,7 +47,11 @@ public class Cluster extends ReceiverAdapter {
 	}
 
 	private String getHostname() throws UnknownHostException {
-		return InetAddress.getLocalHost().getHostName();
+		String hostName = InetAddress.getLocalHost().getHostName();
+		if (hostName.endsWith(".local")) {
+			hostName = hostName.substring(0, hostName.indexOf(".local"));
+		}
+		return hostName;
 	}
 
 	@Override
