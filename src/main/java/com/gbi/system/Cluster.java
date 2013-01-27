@@ -71,7 +71,7 @@ public class Cluster extends ReceiverAdapter {
 		if (!servers.contains(server)) {
 			servers.add(server);
 			try {
-				Hosts.add(server);
+				Hosts.reset(servers);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

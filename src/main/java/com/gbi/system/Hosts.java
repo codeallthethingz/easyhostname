@@ -3,6 +3,7 @@ package com.gbi.system;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -60,6 +61,11 @@ public class Hosts {
 			servers.remove(pServer);
 		}
 		servers.add(pServer);
+		writeServers(servers);
+	}
+
+	public static void reset(Set<Server> pServers) throws IOException {
+		TreeSet<Server> servers = new TreeSet<Server>(pServers);
 		writeServers(servers);
 	}
 
