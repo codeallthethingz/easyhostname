@@ -71,20 +71,20 @@ public class Cluster extends ReceiverAdapter {
 			if (log.isDebugEnabled()) {
 				log.debug("added");
 			}
+			try {
+				if (log.isDebugEnabled()) {
+					log.debug("rebroadcasting");
+				}
+				Message msg = new Message();
+				msg.setBuffer(getMe());
+				channel.send(pMsg.getSrc(), msg);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} else {
 			if (log.isDebugEnabled()) {
 				log.debug("ignored as already in list");
 			}
-		}
-		try {
-			if (log.isDebugEnabled()) {
-				log.debug("rebroadcasting");
-			}
-			Message msg = new Message();
-			msg.setBuffer(getMe());
-			channel.send(msg);
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 
 	}
