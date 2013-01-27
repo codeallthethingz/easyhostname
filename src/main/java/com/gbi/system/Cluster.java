@@ -1,5 +1,6 @@
 package com.gbi.system;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -28,6 +29,7 @@ public class Cluster extends ReceiverAdapter {
 		channel = new JChannel("easyhostnameBroadcast.xml");
 		channel.connect(pClusterName);
 		channel.setReceiver(this);
+		channel.setDiscardOwnMessages(true);
 		Message msg = new Message();
 		msg.setBuffer((getHostname() + ":" + getIp() + ":" + channel
 				.getAddressAsUUID()).getBytes("UTF-8"));
@@ -50,22 +52,35 @@ public class Cluster extends ReceiverAdapter {
 		serversByUuid.put(server.getUuid(), server);
 		if (!servers.contains(server)) {
 			servers.add(server);
+			try {
+				Hosts.add(server);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			if (log.isDebugEnabled()) {
 				log.debug("new server: " + server);
 			}
 		}
+
 	}
 
 	@Override
 	public void suspect(Address pMbr) {
 		super.suspect(pMbr);
-		
+
 		String key = pMbr.toString();
 		if (log.isDebugEnabled()) {
-			log.debug("leaving: " + key );
+			log.debug("leaving: " + key);
 		}
 		Server server = serversByUuid.remove(key);
 		servers.remove(server);
+		try {
+			Hosts.remove(server);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public Set<Server> getServers() {
