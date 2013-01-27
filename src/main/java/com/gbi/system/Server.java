@@ -7,8 +7,6 @@ public class Server implements Comparable<Server> {
 	private String hostame;
 	private String ip;
 
-	private String uuid;
-
 	public Server(String pHostame, String pIp, String pUuid) {
 		super();
 		hostame = pHostame;
@@ -19,7 +17,6 @@ public class Server implements Comparable<Server> {
 		if (StringUtils.isBlank(ip)) {
 			throw new IllegalStateException("IP was empty");
 		}
-		uuid = pUuid;
 	}
 
 	public Server(String pHostame, String pIp) {
@@ -34,13 +31,11 @@ public class Server implements Comparable<Server> {
 		return ip;
 	}
 
-	public String getUuid() {
-		return uuid;
-	}
+	
 
 	@Override
 	public String toString() {
-		return "[" + getHostame() + ":" + getIp() + ":" + getUuid() + "]";
+		return "[" + getHostame() + ":" + getIp() + "]";
 	}
 
 	@Override

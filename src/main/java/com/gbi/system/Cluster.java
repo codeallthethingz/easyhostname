@@ -54,11 +54,12 @@ public class Cluster extends ReceiverAdapter {
 	public void receive(Message pMsg) {
 		String hostPort = new String(pMsg.getRawBuffer());
 		String[] split = hostPort.split(":");
-		Server server = new Server(split[0], split[1], split[2]);
+		Server server = new Server(split[0], split[1]);
+		String key = pMsg.getSrc().toString();
 		if (log.isDebugEnabled()) {
-			log.debug("received: " + server);
+			log.debug("received: " + server + " with key: " + key);
 		}
-		serversByUuid.put(server.getUuid(), server);
+		serversByUuid.put(key, server);
 		if (!servers.contains(server)) {
 			servers.add(server);
 			try {
@@ -95,7 +96,7 @@ public class Cluster extends ReceiverAdapter {
 		String key = pMbr.toString();
 		Server server = serversByUuid.remove(key);
 		if (log.isDebugEnabled()) {
-			log.debug("leaving: " + server);
+			log.debug("leaving from key: " + key + " server: " + server);
 		}
 		servers.remove(server);
 		try {

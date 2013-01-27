@@ -48,7 +48,7 @@ public class HostsTest {
 		Hosts.remove(new Server("myhost1", "127.0.0.1"));
 		assertEquals("# test hosts file - windows\n"
 				+ "127.0.0.1        localhost\n"
-				+ "128.0.0.1         someother.com\n" + "\n"
+				+ "128.0.0.1         someother.com\n"
 				+ "#### Easy Hostname Configuration --- GENERATED START\n"
 				+ "127.0.0.2		myhost2\n"
 				+ "#### Easy Hostname Configuration --- GENERATED END\n" + "",
