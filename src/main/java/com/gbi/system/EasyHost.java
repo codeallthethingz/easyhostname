@@ -37,7 +37,7 @@ public class EasyHost {
 		}
 		new Cluster("easyhostname");
 		while (true) {
-			Thread.sleep(60000);
+			Thread.sleep(1000);
 		}
 	}
 

@@ -94,7 +94,10 @@ public class Hosts {
 			return;
 		}
 		Iterator<Server> iterator = pServers.iterator();
-		newHosts.append("\n").append(START).append("\n");
+		if (!newHosts.toString().endsWith("\n")) {
+			newHosts.append("\n");
+		}
+		newHosts.append(START).append("\n");
 		while (iterator.hasNext()) {
 			Server server = iterator.next();
 			newHosts.append(server.getIp()).append("\t\t")
@@ -128,7 +131,9 @@ public class Hosts {
 
 	public static void remove(Server pServer) throws IOException {
 		TreeSet<Server> servers = parseServers();
-		servers.remove(pServer);
+		if (pServer != null && pServer.getHostame() != null) {
+			servers.remove(pServer);
+		}
 		writeServers(servers);
 	}
 

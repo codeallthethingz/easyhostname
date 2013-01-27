@@ -1,6 +1,7 @@
 package com.gbi.system;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -31,9 +32,14 @@ public class Cluster extends ReceiverAdapter {
 		channel.setReceiver(this);
 		channel.setDiscardOwnMessages(true);
 		Message msg = new Message();
-		msg.setBuffer((getHostname() + ":" + getIp() + ":" + channel
-				.getAddressAsUUID()).getBytes("UTF-8"));
+		msg.setBuffer(getMe());
 		channel.send(msg);
+	}
+
+	private byte[] getMe() throws UnsupportedEncodingException,
+			UnknownHostException {
+		return (getHostname() + ":" + getIp() + ":" + channel
+				.getAddressAsUUID()).getBytes("UTF-8");
 	}
 
 	private String getIp() throws UnknownHostException {
@@ -62,6 +68,13 @@ public class Cluster extends ReceiverAdapter {
 				log.debug("new server: " + server);
 			}
 		}
+		try {
+			Message msg = new Message();
+			msg.setBuffer(getMe());
+			channel.send(msg);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -70,10 +83,10 @@ public class Cluster extends ReceiverAdapter {
 		super.suspect(pMbr);
 
 		String key = pMbr.toString();
-		if (log.isDebugEnabled()) {
-			log.debug("leaving: " + key);
-		}
 		Server server = serversByUuid.remove(key);
+		if (log.isDebugEnabled()) {
+			log.debug("leaving: " + server);
+		}
 		servers.remove(server);
 		try {
 			Hosts.remove(server);
