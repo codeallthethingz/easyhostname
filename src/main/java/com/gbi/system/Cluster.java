@@ -54,7 +54,7 @@ public class Cluster extends ReceiverAdapter {
 	public void receive(Message pMsg) {
 		String hostPort = null;
 		try {
-			hostPort = new String(pMsg.getBuffer(), "UTF-8");
+			hostPort = new String(pMsg.getRawBuffer(), "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
 		}
 		String[] split = hostPort.split(":");
@@ -79,9 +79,7 @@ public class Cluster extends ReceiverAdapter {
 				if (log.isDebugEnabled()) {
 					log.debug("rebroadcasting");
 				}
-				Message msg = new Message();
-				msg.setBuffer(getMe());
-				channel.send(pMsg.getSrc(), msg);
+				channel.send(pMsg.getSrc(), getMe());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
